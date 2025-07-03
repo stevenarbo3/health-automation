@@ -6,7 +6,7 @@ import re
 two_up = os.path.dirname(os.path.dirname(__file__))
 path = os.path.join(two_up, 'logs', 'service.logs')
 
-def get_latency(latency, contents, num):
+def get_latency(contents, num):
     match = re.search(r'(\d+)ms', contents[num])
     return int(match.group(1)) if match else 0
 
@@ -32,9 +32,9 @@ def analyze(path):
                     total_failure += 1
                     
                 if len(contents) == 4:
-                    latency += get_latency(latency, contents, 3)
+                    latency += get_latency(contents, 3)
                 else:
-                    latency += get_latency(latency, contents, 4)
+                    latency += get_latency(contents, 4)
                     
                     reason = contents[3].partition('reason=')[2]
                     reason_dict[reason] = reason_dict.get(reason, 0) + 1
@@ -68,5 +68,6 @@ def analyze(path):
         print(f"An error occurred: {e}")
         
 print(analyze(path))
+print(type(analyze(path)))
     
     
